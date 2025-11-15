@@ -17,7 +17,7 @@ export const exercises: ExerciseMeta[] = [
     id: 'differences-cest-ses-ces-sest',
     title: "Différencier c'est / ses / ces / s'est",
     description: 'Choisir la bonne forme dans chaque phrase',
-    level: 'ce1',
+    level: 'ce2',
     subject: 'francais',
     path: '/exercice/differences-cest-ses-ces-sest',
   },

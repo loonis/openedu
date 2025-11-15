@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { Button, Card } from '../components/ui';
 import { exercises } from '../data/exercises';
 import { LEVEL_LABELS, SUBJECT_LABELS } from '../types';
+import { useMenu } from '../contexts/MenuContext';
 
 /**
  * Page d'accueil du site
  */
 export const HomePage: React.FC = () => {
+  const { openMenu } = useMenu();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
@@ -25,7 +28,7 @@ export const HomePage: React.FC = () => {
             <Button size="lg" onClick={() => window.scrollTo({ top: 600, behavior: 'smooth' })}>
               Découvrir les exercices
             </Button>
-            <Button size="lg" variant="secondary">
+            <Button size="lg" variant="secondary" onClick={openMenu}>
               Ouvrir le menu
             </Button>
           </div>
@@ -110,7 +113,7 @@ export const HomePage: React.FC = () => {
           <p className="text-xl mb-8">
             Ouvrez le menu pour explorer tous les exercices par niveau et par matière
           </p>
-          <Button size="lg" variant="secondary">
+          <Button size="lg" variant="secondary" onClick={openMenu}>
             Explorer les exercices
           </Button>
         </div>
