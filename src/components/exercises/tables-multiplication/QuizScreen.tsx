@@ -35,10 +35,18 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     setFeedback(null);
     setShowAnswer(false);
     setTimerProgress(100);
-    // Utiliser setTimeout pour s'assurer que le focus se fait après le rendu
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
+
+    // Solution compatible iOS : délai plus long et click() avant focus()
+    // iOS nécessite un délai plus important et peut nécessiter un click() pour débloquer le focus
+    const focusTimeout = setTimeout(() => {
+      if (inputRef.current) {
+        // Sur iOS, click() peut aider à débloquer le clavier virtuel
+        inputRef.current.click();
+        inputRef.current.focus();
+      }
+    }, 100);
+
+    return () => clearTimeout(focusTimeout);
   }, [question]);
 
   // Gérer le timer pour les réponses incorrectes

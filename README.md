@@ -213,14 +213,6 @@ Pour plus de détails, consultez le fichier [CLAUDE.md](./CLAUDE.md).
 
 Ce projet est sous licence **MIT** - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-Cela signifie que vous êtes libre de :
-- ✅ Utiliser le code pour un usage commercial ou personnel
-- ✅ Modifier le code
-- ✅ Distribuer le code
-- ✅ Utiliser le code dans des projets privés
-
-Sous réserve de conserver la notice de copyright et la licence.
-
 ## 🌟 Roadmap
 
 - [ ] Ajouter plus d'exercices de mathématiques
