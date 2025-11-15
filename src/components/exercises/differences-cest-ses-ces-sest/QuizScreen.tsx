@@ -8,7 +8,11 @@ interface QuizScreenProps {
   questionNumber: number;
   totalQuestions: number;
   onSubmitAnswer: (answer: AnswerType) => void;
+  onExit: () => void;
 }
+
+// Durée d'affichage de la correction en millisecondes
+const INCORRECT_ANSWER_DURATION = 5000;
 
 /**
  * Écran de quiz avec les questions
@@ -18,17 +22,37 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
   questionNumber,
   totalQuestions,
   onSubmitAnswer,
+  onExit,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<AnswerType | null>(null);
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [timerProgress, setTimerProgress] = useState<number>(100);
 
   // Réinitialiser l'état à chaque nouvelle question
   useEffect(() => {
     setSelectedAnswer(null);
     setFeedback(null);
     setShowAnswer(false);
+    setTimerProgress(100);
   }, [question]);
+
+  // Gérer le timer pour les réponses incorrectes
+  useEffect(() => {
+    if (feedback === 'incorrect') {
+      const intervalTime = 50; // mise à jour toutes les 50ms
+      const decrementValue = (100 / INCORRECT_ANSWER_DURATION) * intervalTime;
+
+      const timer = setInterval(() => {
+        setTimerProgress((prev) => {
+          const newProgress = prev - decrementValue;
+          return newProgress <= 0 ? 0 : newProgress;
+        });
+      }, intervalTime);
+
+      return () => clearInterval(timer);
+    }
+  }, [feedback]);
 
   // Gérer le clic sur un bouton de réponse
   const handleAnswerClick = (answer: AnswerType) => {
@@ -45,7 +69,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     // Attendre un peu avant de passer à la question suivante
     setTimeout(() => {
       onSubmitAnswer(answer);
-    }, isCorrect ? 1000 : 2500);
+    }, isCorrect ? 1000 : INCORRECT_ANSWER_DURATION);
   };
 
   // Remplacer ___ par la réponse dans la phrase (pour l'affichage de la bonne réponse)
@@ -55,6 +79,17 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Bouton de sortie */}
+      <div className="flex justify-end">
+        <button
+          onClick={onExit}
+          className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Quitter l'exercice"
+        >
+          <Icon name="x" size={24} />
+        </button>
+      </div>
+
       {/* Progression */}
       <div className="text-center">
         <p className="text-gray-600 font-medium">
@@ -150,19 +185,17 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
                   "{getCompletedPhrase(question.correctAnswer)}"
                 </p>
               </div>
+              {/* Barre de progression du timer */}
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-50 ease-linear"
+                  style={{ width: `${timerProgress}%` }}
+                ></div>
+              </div>
             </div>
           )}
         </div>
       </Card>
-
-      {/* Astuce */}
-      {feedback === null && (
-        <Card className="bg-purple-50">
-          <p className="text-sm text-gray-700 text-center">
-            💡 Lis bien la phrase et réfléchis au sens !
-          </p>
-        </Card>
-      )}
     </div>
   );
 };

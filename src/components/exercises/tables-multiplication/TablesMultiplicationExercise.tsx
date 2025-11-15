@@ -79,20 +79,22 @@ export const TablesMultiplicationExercise: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Header minimal pour les exercices */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <Icon name="home" size={20} />
-            <span className="font-medium">Retour</span>
-          </Link>
-          <h1 className="text-lg font-bold text-gray-900">Tables de multiplication</h1>
-          <div className="w-20"></div> {/* Spacer pour centrer le titre */}
+      {/* Header minimal uniquement pour config et results */}
+      {state.step !== 'quiz' && (
+        <div className="bg-white shadow-sm">
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <Icon name="home" size={20} />
+              <span className="font-medium">Retour</span>
+            </Link>
+            <h1 className="text-lg font-bold text-gray-900">Tables de multiplication</h1>
+            <div className="w-20"></div> {/* Spacer pour centrer le titre */}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Contenu de l'exercice */}
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -105,6 +107,7 @@ export const TablesMultiplicationExercise: React.FC = () => {
             questionNumber={state.currentQuestionIndex + 1}
             totalQuestions={state.questions.length}
             onSubmitAnswer={handleSubmitAnswer}
+            onExit={handleRestart}
           />
         )}
 

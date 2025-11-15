@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
   {
     path: '/exercice/:exerciseId',
     element: (
-      <Layout hideFooter>
+      <Layout hideFooter hideHeader>
         <ExercisePage />
       </Layout>
     ),

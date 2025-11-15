@@ -7,7 +7,11 @@ interface QuizScreenProps {
   questionNumber: number;
   totalQuestions: number;
   onSubmitAnswer: (answer: number) => void;
+  onExit: () => void;
 }
+
+// Durée d'affichage de la correction en millisecondes
+const INCORRECT_ANSWER_DURATION = 5000;
 
 /**
  * Écran de quiz avec les questions
@@ -17,10 +21,12 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
   questionNumber,
   totalQuestions,
   onSubmitAnswer,
+  onExit,
 }) => {
   const [userInput, setUserInput] = useState<string>('');
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [timerProgress, setTimerProgress] = useState<number>(100);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Focus automatique sur l'input à chaque nouvelle question
@@ -28,11 +34,29 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     setUserInput('');
     setFeedback(null);
     setShowAnswer(false);
+    setTimerProgress(100);
     // Utiliser setTimeout pour s'assurer que le focus se fait après le rendu
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   }, [question]);
+
+  // Gérer le timer pour les réponses incorrectes
+  useEffect(() => {
+    if (feedback === 'incorrect') {
+      const intervalTime = 50; // mise à jour toutes les 50ms
+      const decrementValue = (100 / INCORRECT_ANSWER_DURATION) * intervalTime;
+
+      const timer = setInterval(() => {
+        setTimerProgress((prev) => {
+          const newProgress = prev - decrementValue;
+          return newProgress <= 0 ? 0 : newProgress;
+        });
+      }, intervalTime);
+
+      return () => clearInterval(timer);
+    }
+  }, [feedback]);
 
   // Gérer la soumission de la réponse
   const handleSubmit = (e: React.FormEvent) => {
@@ -55,7 +79,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     // Attendre un peu avant de passer à la question suivante
     setTimeout(() => {
       onSubmitAnswer(answer);
-    }, isCorrect ? 800 : 2000);
+    }, isCorrect ? 800 : INCORRECT_ANSWER_DURATION);
   };
 
   // Gérer la touche Entrée
@@ -67,6 +91,17 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Bouton de sortie */}
+      <div className="flex justify-end">
+        <button
+          onClick={onExit}
+          className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Quitter l'exercice"
+        >
+          <Icon name="x" size={24} />
+        </button>
+      </div>
+
       {/* Progression */}
       <div className="text-center">
         <p className="text-gray-600 font-medium">
@@ -137,19 +172,17 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
               <p className="text-lg text-gray-700">
                 La bonne réponse était <span className="font-bold text-blue-600">{question.answer}</span>
               </p>
+              {/* Barre de progression du timer */}
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mt-3">
+                <div
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-50 ease-linear"
+                  style={{ width: `${timerProgress}%` }}
+                ></div>
+              </div>
             </div>
           )}
         </div>
       </Card>
-
-      {/* Astuce */}
-      {feedback === null && (
-        <Card className="bg-purple-50">
-          <p className="text-sm text-gray-700 text-center">
-            💡 Prends ton temps pour bien réfléchir
-          </p>
-        </Card>
-      )}
     </div>
   );
 };
