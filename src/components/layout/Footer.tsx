@@ -21,12 +21,7 @@ export const Footer: React.FC = () => {
             <h3 className="font-bold text-lg mb-3">Liens utiles</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Comment contribuer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                <a href="https://github.com/loonis/openedu" className="text-gray-300 hover:text-white transition-colors">
                   GitHub
                 </a>
               </li>
