@@ -100,6 +100,7 @@ export const TablesMultiplicationExercise: React.FC = () => {
 
         {state.step === 'quiz' && (
           <QuizScreen
+            key={state.currentQuestionIndex}
             question={state.questions[state.currentQuestionIndex]}
             questionNumber={state.currentQuestionIndex + 1}
             totalQuestions={state.questions.length}

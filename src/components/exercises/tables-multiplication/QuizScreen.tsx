@@ -28,7 +28,10 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     setUserInput('');
     setFeedback(null);
     setShowAnswer(false);
-    inputRef.current?.focus();
+    // Utiliser setTimeout pour s'assurer que le focus se fait après le rendu
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
   }, [question]);
 
   // Gérer la soumission de la réponse
