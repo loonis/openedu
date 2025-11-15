@@ -12,18 +12,43 @@ export function generateQuestions(config: ExerciseConfig): MultiplicationQuestio
     return [];
   }
 
-  for (let i = 0; i < questionCount; i++) {
+  // Multiplicateurs autorisés (2 à 9, excluant 1 et 10)
+  const allowedMultipliers = [2, 3, 4, 5, 6, 7, 8, 9];
+
+  // Créer un Set pour stocker les combinaisons déjà générées (format: "a-b")
+  const usedCombinations = new Set<string>();
+
+  // Calculer le nombre maximum de combinaisons possibles
+  const maxCombinations = tables.length * allowedMultipliers.length;
+
+  // Si on demande plus de questions que de combinaisons possibles, limiter
+  const actualQuestionCount = Math.min(questionCount, maxCombinations);
+
+  let attempts = 0;
+  const maxAttempts = actualQuestionCount * 10; // Limite pour éviter une boucle infinie
+
+  while (questions.length < actualQuestionCount && attempts < maxAttempts) {
+    attempts++;
+
     // Choisir aléatoirement une table parmi celles sélectionnées
     const table = tables[Math.floor(Math.random() * tables.length)];
 
-    // Générer un multiplicateur entre 1 et 10
-    const multiplier = Math.floor(Math.random() * 10) + 1;
+    // Choisir aléatoirement un multiplicateur parmi les multiplicateurs autorisés
+    const multiplier = allowedMultipliers[Math.floor(Math.random() * allowedMultipliers.length)];
 
-    questions.push({
-      a: table,
-      b: multiplier,
-      answer: table * multiplier,
-    });
+    // Créer une clé unique pour cette combinaison
+    const combinationKey = `${table}-${multiplier}`;
+
+    // Vérifier si cette combinaison n'a pas déjà été utilisée
+    if (!usedCombinations.has(combinationKey)) {
+      usedCombinations.add(combinationKey);
+
+      questions.push({
+        a: table,
+        b: multiplier,
+        answer: table * multiplier,
+      });
+    }
   }
 
   return questions;
