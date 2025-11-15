@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Card } from '../../ui';
+import { ExerciseConfig } from './types';
+import { MIN_QUESTIONS, MAX_QUESTIONS } from './data';
 
 interface ConfigScreenProps {
-  onStart: (questionCount: number) => void;
+  onStart: (config: ExerciseConfig) => void;
 }
 
 /**
@@ -12,7 +14,8 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
   const [questionCount, setQuestionCount] = useState<number>(15);
 
   const handleStart = () => {
-    onStart(questionCount);
+    const config = new ExerciseConfig(questionCount);
+    onStart(config);
   };
 
   return (
@@ -59,8 +62,8 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
             <div className="flex items-center justify-center gap-4">
               <Button
                 variant="secondary"
-                onClick={() => setQuestionCount(Math.max(5, questionCount - 5))}
-                disabled={questionCount <= 5}
+                onClick={() => setQuestionCount(Math.max(MIN_QUESTIONS, questionCount - 5))}
+                disabled={questionCount <= MIN_QUESTIONS}
               >
                 −
               </Button>
@@ -69,14 +72,14 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
               </span>
               <Button
                 variant="secondary"
-                onClick={() => setQuestionCount(Math.min(32, questionCount + 5))}
-                disabled={questionCount >= 32}
+                onClick={() => setQuestionCount(Math.min(MAX_QUESTIONS, questionCount + 5))}
+                disabled={questionCount >= MAX_QUESTIONS}
               >
                 +
               </Button>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              (Entre 5 et 32 phrases)
+              (Entre {MIN_QUESTIONS} et {MAX_QUESTIONS} phrases)
             </p>
           </div>
 

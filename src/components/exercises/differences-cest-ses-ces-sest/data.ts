@@ -1,4 +1,4 @@
-import type { PhraseQuestion, AnswerType } from './types';
+import type { PhraseQuestion, AnswerType, ExerciseConfig } from './types';
 
 /**
  * Liste de phrases à compléter pour l'exercice
@@ -110,11 +110,11 @@ function shuffleArray<T>(array: T[]): T[] {
 
 /**
  * Génère une liste de questions pour l'exercice
- * @param count Nombre de questions à générer (par défaut : toutes)
+ * @param config Configuration de l'exercice (nombre de questions)
  */
-export function generateQuestions(count?: number): PhraseQuestion[] {
+export function generateQuestions(config: ExerciseConfig): PhraseQuestion[] {
   const shuffledPhrases = shuffleArray(phrasesData);
-  const selectedPhrases = count ? shuffledPhrases.slice(0, count) : shuffledPhrases;
+  const selectedPhrases = shuffledPhrases.slice(0, config.questionCount);
 
   return selectedPhrases.map((item) => ({
     phrase: item.phrase,
@@ -123,6 +123,37 @@ export function generateQuestions(count?: number): PhraseQuestion[] {
 }
 
 /**
+ * Calcule le score (pourcentage de bonnes réponses)
+ */
+export function calculateScore(questions: PhraseQuestion[]): number {
+  const correctCount = questions.filter((q) => q.isCorrect).length;
+  return Math.round((correctCount / questions.length) * 100);
+}
+
+/**
+ * Retourne un message d'encouragement selon le score
+ */
+export function getEncouragementMessage(score: number): string {
+  if (score === 100) {
+    return 'Parfait ! Tu maîtrises parfaitement ces homophones ! 🏆';
+  } else if (score >= 80) {
+    return 'Très bien ! Continue comme ça ! 🌟';
+  } else if (score >= 60) {
+    return 'Bon travail ! Encore un petit effort ! 💪';
+  } else if (score >= 40) {
+    return 'Pas mal ! Continue de t\'entraîner ! 📚';
+  } else {
+    return 'Continue de t\'entraîner, tu vas y arriver ! 🎯';
+  }
+}
+
+/**
  * Toutes les réponses possibles dans l'ordre
  */
 export const ALL_ANSWERS: AnswerType[] = ["c'est", 'ses', 'ces', "s'est"];
+
+/**
+ * Nombre minimum et maximum de questions
+ */
+export const MIN_QUESTIONS = 5;
+export const MAX_QUESTIONS = phrasesData.length;

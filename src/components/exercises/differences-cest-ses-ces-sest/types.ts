@@ -14,6 +14,17 @@ export interface PhraseQuestion {
 }
 
 /**
+ * Configuration de l'exercice (choix de l'utilisateur)
+ */
+export class ExerciseConfig {
+  questionCount: number;
+
+  constructor(questionCount: number = 15) {
+    this.questionCount = questionCount;
+  }
+}
+
+/**
  * Étapes de l'exercice
  */
 export type ExerciseStep = 'config' | 'quiz' | 'results';
@@ -23,6 +34,7 @@ export type ExerciseStep = 'config' | 'quiz' | 'results';
  */
 export interface ExerciseState {
   step: ExerciseStep;
+  config: ExerciseConfig | null;
   questions: PhraseQuestion[];
   currentQuestionIndex: number;
   score: number;

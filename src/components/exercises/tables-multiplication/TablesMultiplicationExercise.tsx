@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../ui';
 import type { ExerciseState, ExerciseConfig } from './types';
-import { generateQuestions } from './utils';
+import { generateQuestions } from './data';
 import { ConfigScreen } from './ConfigScreen';
 import { QuizScreen } from './QuizScreen';
 import { ResultsScreen } from './ResultsScreen';

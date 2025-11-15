@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card } from '../../ui';
 import type { ExerciseConfig } from './types';
+import { ALL_TABLES } from './data';
 
 interface ConfigScreenProps {
   onStart: (config: ExerciseConfig) => void;
@@ -13,7 +14,7 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
   const [selectedTables, setSelectedTables] = useState<number[]>([2, 3, 4, 5]);
   const [questionCount, setQuestionCount] = useState<number>(10);
 
-  const availableTables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const availableTables = ALL_TABLES;
   const questionOptions = [5, 10, 15, 20, 30];
 
   // Toggle une table

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card } from '../../ui';
 import { Icon } from '../../ui';
 import type { PhraseQuestion } from './types';
+import { calculateScore, getEncouragementMessage } from './data';
 
 interface ResultsScreenProps {
   questions: PhraseQuestion[];
@@ -17,25 +18,8 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   score,
   onRestart,
 }) => {
-  const totalQuestions = questions.length;
-  const percentage = Math.round((score / totalQuestions) * 100);
-
-  // Détermine le message d'encouragement en fonction du score
-  const getMessage = () => {
-    if (percentage === 100) {
-      return { text: 'Parfait ! Tu es un champion !', emoji: '🏆' };
-    } else if (percentage >= 80) {
-      return { text: 'Très bien ! Continue comme ça !', emoji: '🌟' };
-    } else if (percentage >= 60) {
-      return { text: 'Bien joué ! Tu progresses !', emoji: '👍' };
-    } else if (percentage >= 40) {
-      return { text: 'Pas mal ! Encore un petit effort !', emoji: '💪' };
-    } else {
-      return { text: 'Continue à t\'entraîner !', emoji: '📚' };
-    }
-  };
-
-  const message = getMessage();
+  const percentage = calculateScore(questions);
+  const message = getEncouragementMessage(percentage);
 
   return (
     <div className="space-y-6">
@@ -46,7 +30,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
             Exercice terminé !
           </h2>
           <p className="text-xl text-gray-600">
-            {message.emoji} {message.text}
+            {message}
           </p>
         </div>
 
@@ -54,7 +38,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         <div className="bg-blue-50 p-8 rounded-lg">
           <p className="text-lg text-gray-700 mb-2">Ton score :</p>
           <p className="text-5xl font-bold text-blue-600">
-            {score} / {totalQuestions}
+            {score} / {questions.length}
           </p>
           <p className="text-2xl text-gray-600 mt-2">
             {percentage}%

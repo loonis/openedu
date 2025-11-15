@@ -1,7 +1,8 @@
 import type { MultiplicationQuestion, ExerciseConfig } from './types';
 
 /**
- * Génère une liste de questions aléatoires selon la configuration
+ * Génère une liste de questions pour l'exercice
+ * @param config Configuration de l'exercice (tables et nombre de questions)
  */
 export function generateQuestions(config: ExerciseConfig): MultiplicationQuestion[] {
   const questions: MultiplicationQuestion[] = [];
@@ -29,18 +30,6 @@ export function generateQuestions(config: ExerciseConfig): MultiplicationQuestio
 }
 
 /**
- * Mélange aléatoirement un tableau (Fisher-Yates shuffle)
- */
-export function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-/**
  * Calcule le score (pourcentage de bonnes réponses)
  */
 export function calculateScore(questions: MultiplicationQuestion[]): number {
@@ -64,3 +53,8 @@ export function getEncouragementMessage(score: number): string {
     return 'Continue de t\'entraîner, tu vas y arriver ! 🎯';
   }
 }
+
+/**
+ * Toutes les tables disponibles (1 à 10)
+ */
+export const ALL_TABLES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

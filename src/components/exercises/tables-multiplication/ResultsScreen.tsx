@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card } from '../../ui';
 import type { MultiplicationQuestion } from './types';
-import { calculateScore, getEncouragementMessage } from './utils';
+import { calculateScore, getEncouragementMessage } from './data';
 
 interface ResultsScreenProps {
   questions: MultiplicationQuestion[];

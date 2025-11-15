@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../ui';
-import type { ExerciseState, AnswerType } from './types';
+import type { ExerciseState, ExerciseConfig, AnswerType } from './types';
 import { generateQuestions } from './data';
 import { ConfigScreen } from './ConfigScreen';
 import { QuizScreen } from './QuizScreen';
@@ -13,16 +13,18 @@ import { ResultsScreen } from './ResultsScreen';
 export const DifferencesCestSesCesSestExercise: React.FC = () => {
   const [state, setState] = useState<ExerciseState>({
     step: 'config',
+    config: null,
     questions: [],
     currentQuestionIndex: 0,
     score: 0,
   });
 
-  // Démarrer l'exercice avec le nombre de questions choisi
-  const handleStartExercise = (questionCount: number) => {
-    const questions = generateQuestions(questionCount);
+  // Démarrer l'exercice avec la configuration choisie
+  const handleStartExercise = (config: ExerciseConfig) => {
+    const questions = generateQuestions(config);
     setState({
       step: 'quiz',
+      config,
       questions,
       currentQuestionIndex: 0,
       score: 0,
@@ -68,6 +70,7 @@ export const DifferencesCestSesCesSestExercise: React.FC = () => {
   const handleRestart = () => {
     setState({
       step: 'config',
+      config: null,
       questions: [],
       currentQuestionIndex: 0,
       score: 0,
