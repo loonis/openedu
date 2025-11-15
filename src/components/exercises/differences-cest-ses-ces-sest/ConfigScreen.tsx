@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card } from '../../ui';
+import { Button, Card, QuestionCountSelector } from '../../ui';
 import { ExerciseConfig } from './types';
 import { MIN_QUESTIONS, MAX_QUESTIONS } from './data';
 
@@ -11,7 +11,7 @@ interface ConfigScreenProps {
  * Écran de configuration de l'exercice
  */
 export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
-  const [questionCount, setQuestionCount] = useState<number>(15);
+  const [questionCount, setQuestionCount] = useState<number>(10);
 
   const handleStart = () => {
     const config = new ExerciseConfig(questionCount);
@@ -55,33 +55,14 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
           </div>
 
           {/* Sélection du nombre de questions */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nombre de phrases :
-            </label>
-            <div className="flex items-center justify-center gap-4">
-              <Button
-                variant="secondary"
-                onClick={() => setQuestionCount(Math.max(MIN_QUESTIONS, questionCount - 5))}
-                disabled={questionCount <= MIN_QUESTIONS}
-              >
-                −
-              </Button>
-              <span className="text-2xl font-bold text-gray-900 w-16 text-center">
-                {questionCount}
-              </span>
-              <Button
-                variant="secondary"
-                onClick={() => setQuestionCount(Math.min(MAX_QUESTIONS, questionCount + 5))}
-                disabled={questionCount >= MAX_QUESTIONS}
-              >
-                +
-              </Button>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              (Entre {MIN_QUESTIONS} et {MAX_QUESTIONS} phrases)
-            </p>
-          </div>
+          <QuestionCountSelector
+            value={questionCount}
+            onChange={setQuestionCount}
+            min={MIN_QUESTIONS}
+            max={MAX_QUESTIONS}
+            step={5}
+            label="Nombre de questions"
+          />
 
           {/* Bouton démarrer */}
           <Button onClick={handleStart} size="lg" className="w-full sm:w-auto">

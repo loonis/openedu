@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card } from '../../ui';
+import { Button, Card, QuestionCountSelector } from '../../ui';
 import type { ExerciseConfig } from './types';
 import { ALL_TABLES } from './data';
 
@@ -15,7 +15,11 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
   const [questionCount, setQuestionCount] = useState<number>(10);
 
   const availableTables = ALL_TABLES;
-  const questionOptions = [5, 10, 15, 20, 30];
+
+  // Constantes pour le sélecteur de nombre de questions
+  const MIN_QUESTIONS = 5;
+  const MAX_QUESTIONS = 30;
+  const QUESTION_STEP = 5;
 
   // Toggle une table
   const toggleTable = (table: number) => {
@@ -98,25 +102,14 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onStart }) => {
 
         {/* Sélection du nombre de questions */}
         <div className="mb-6">
-          <label className="text-lg font-semibold text-gray-900 mb-3 block">
-            Nombre de questions
-          </label>
-
-          <div className="grid grid-cols-5 gap-3">
-            {questionOptions.map((count) => (
-              <button
-                key={count}
-                onClick={() => setQuestionCount(count)}
-                className={`p-4 rounded-lg border-2 transition-all font-bold text-lg ${
-                  questionCount === count
-                    ? 'border-purple-600 bg-purple-50 text-purple-700'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-                }`}
-              >
-                {count}
-              </button>
-            ))}
-          </div>
+          <QuestionCountSelector
+            value={questionCount}
+            onChange={setQuestionCount}
+            min={MIN_QUESTIONS}
+            max={MAX_QUESTIONS}
+            step={QUESTION_STEP}
+            label="Nombre de questions"
+          />
         </div>
 
         {/* Bouton de démarrage */}
