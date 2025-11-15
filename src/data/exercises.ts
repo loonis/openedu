@@ -13,6 +13,14 @@ export const exercises: ExerciseMeta[] = [
     subject: 'maths',
     path: '/exercice/tables-multiplication',
   },
+  {
+    id: 'differences-cest-ses-ces-sest',
+    title: "Différencier c'est / ses / ces / s'est",
+    description: 'Choisir la bonne forme dans chaque phrase',
+    level: 'ce1',
+    subject: 'francais',
+    path: '/exercice/differences-cest-ses-ces-sest',
+  },
   // Exemples d'exercices futurs (commentés pour l'instant)
   // {
   //   id: 'conjugaison-present',

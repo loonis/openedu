@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { getExerciseById } from '../data/exercises';
 import { TablesMultiplicationExercise } from '../components/exercises/tables-multiplication/TablesMultiplicationExercise';
+import { DifferencesCestSesCesSestExercise } from '../components/exercises/differences-cest-ses-ces-sest/DifferencesCestSesCesSestExercise';
 import { Loader } from '../components/ui';
 
 /**
@@ -40,6 +41,7 @@ export const ExercisePage: React.FC = () => {
   // Pour ajouter un nouvel exercice, ajoutez-le ici
   const exerciseComponents: Record<string, React.ComponentType> = {
     'tables-multiplication': TablesMultiplicationExercise,
+    'differences-cest-ses-ces-sest': DifferencesCestSesCesSestExercise,
     // Exemples futurs :
     // 'conjugaison-present': ConjugaisonPresentExercise,
     // 'additions-soustractions': AdditionsSoustractionsExercise,
