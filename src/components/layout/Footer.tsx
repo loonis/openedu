@@ -39,6 +39,15 @@ export const Footer: React.FC = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
           <p>&copy; 2025 OpenEdu. Tous droits réservés.</p>
+          <p className="mt-2">
+            Build: {new Date(__BUILD_DATE__).toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit'
+            })} • Commit: {__GIT_COMMIT__}
+          </p>
         </div>
       </div>
     </footer>
